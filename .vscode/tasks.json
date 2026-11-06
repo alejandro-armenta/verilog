@@ -25,7 +25,7 @@
     {
       "label": "Synthesis",
       "type": "shell",
-      "command": "yosys -s synth.ys && xdot schematic_output.dot",
+      "command": "yosys -s synth.ys",
       "problemMatcher": [],
       "group": {
         "kind": "build",
