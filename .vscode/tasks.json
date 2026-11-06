@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Simulation Build",
+      "type": "shell",
+      "command": "iverilog -o and_gate.vvp and_gate.v and_gate_tb.v",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Simulation Run",
+      "type": "shell",
+      "command": "vvp and_gate.vvp",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+    ,
+    {
+      "label": "Synthesis",
+      "type": "shell",
+      "command": "yosys -s synth.ys && xdot schematic_output.dot",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },{
+      "label": "Format Verilog",
+      "type": "shell",
+      "command": "./format.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}

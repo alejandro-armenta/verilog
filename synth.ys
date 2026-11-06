@@ -1,0 +1,20 @@
+read_verilog and_gate.v
+
+hierarchy -check -top and_gate
+
+proc
+
+opt
+
+show -colors 2 -format png -prefix schematic_output
+
+techmap
+
+opt
+
+stat
+
+write_verilog synthesized_and_gate.v
+
+
+

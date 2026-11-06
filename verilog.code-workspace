@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.fontSize": 14,
+		"workbench.editor.limit.enabled": true,
+		"workbench.editor.limit.perEditorGroup": true,
+		"workbench.editor.limit.value": 1,
+		"terminal.integrated.fontSize": 14,
+		"files.autoSave": "afterDelay",
+		"terminal.integrated.scrollback": 5000,
+		"editor.wordWrap": "on",
+		"editor.wordWrapIndicator": true,
+	}
+}
