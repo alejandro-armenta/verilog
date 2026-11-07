@@ -1,14 +1,22 @@
 {
   "version": "2.0.0",
+  "presentation": {
+        "focus": false,
+        "reveal": "never"
+  },
   "tasks": [
     {
       "label": "Simulation Build",
       "type": "shell",
-      "command": "iverilog -o my_design and_gate.v and_gate_tb.v",
+      "command": "iverilog -o my_design counter.v tb_counter.v",
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true
+      },
+      "presentation": {
+        "focus": false,
+        "reveal": "always"
       }
     },
     {
@@ -19,6 +27,10 @@
       "group": {
         "kind": "build",
         "isDefault": false
+      },
+      "presentation": {
+        "focus": false,
+        "reveal": "always"
       }
     },
     {
@@ -29,6 +41,10 @@
       "group": {
         "kind": "build",
         "isDefault": false
+      },
+      "presentation": {
+        "focus": false,
+        "reveal": "always"
       }
     },
     {

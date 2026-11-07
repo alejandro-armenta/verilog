@@ -1,20 +1,10 @@
-read_verilog and_gate.v
+read_verilog counter.v
 
-hierarchy -check -top and_gate
+hierarchy -check -top counter
 
-proc
+synth
 
-opt
-
-show -colors 2 -format png -prefix schematic_output
-
-techmap
-
-opt
-
-stat
-
-write_verilog synthesized_and_gate.v
+write_verilog -noattr counter_synthesized.v
 
 
 
