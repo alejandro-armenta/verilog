@@ -4,7 +4,7 @@
     {
       "label": "Simulation Build",
       "type": "shell",
-      "command": "iverilog -o and_gate.vvp and_gate.v and_gate_tb.v",
+      "command": "iverilog -o my_design and_gate.v and_gate_tb.v",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -14,14 +14,13 @@
     {
       "label": "Simulation Run",
       "type": "shell",
-      "command": "vvp and_gate.vvp",
+      "command": "vvp my_design",
       "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": false
       }
-    }
-    ,
+    },
     {
       "label": "Synthesis",
       "type": "shell",
@@ -31,10 +30,21 @@
         "kind": "build",
         "isDefault": false
       }
-    },{
+    },
+    {
       "label": "Format Verilog",
       "type": "shell",
       "command": "./format.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Open Wave",
+      "type": "shell",
+      "command": "gtkwave and_gate_waves.vcd --script add_all.tcl",
       "problemMatcher": [],
       "group": {
         "kind": "build",

@@ -2,7 +2,11 @@
 
 (* top =  1  *)
 (* src = "and_gate.v:1.1-9.10" *)
-module and_gate(a, b, y);
+module and_gate (
+    a,
+    b,
+    y
+);
   (* src = "and_gate.v:2.12-2.13" *)
   input a;
   wire a;
@@ -12,5 +16,5 @@ module and_gate(a, b, y);
   (* src = "and_gate.v:4.12-4.13" *)
   output y;
   wire y;
-  assign y = a &(* src = "and_gate.v:7.14-7.19" *)  b;
+  assign y = a & (* src = "and_gate.v:7.14-7.19" *) b;
 endmodule

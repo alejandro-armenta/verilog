@@ -1,0 +1,24 @@
+[*]
+[*] GTKWave Analyzer v3.3.126 (w)1999-2026 BSI
+[*] Sat Nov  7 02:35:15 2026
+[*]
+[dumpfile] "/home/alejandro-armenta/Documents/verilog/and_gate_waves.vcd"
+[dumpfile_mtime] "Sat Nov  7 00:56:03 2026"
+[dumpfile_size] 440
+[savefile] "/home/alejandro-armenta/Documents/verilog/my_waves.gtkw"
+[timestart] 0
+[size] 1440 853
+[pos] -27 -24
+*-12.884480 20000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] and_gate_tb.
+[sst_width] 278
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 245
+@29
+and_gate_tb.dut.a
+@28
+and_gate_tb.dut.b
+and_gate_tb.dut.y
+[pattern_trace] 1
+[pattern_trace] 0
