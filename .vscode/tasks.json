@@ -8,7 +8,7 @@
     {
       "label": "Simulation Build",
       "type": "shell",
-      "command": "iverilog -o my_design counter.v tb_counter.v",
+      "command": "iverilog -o sim_pre counter.v tb_counter.v",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -22,7 +22,7 @@
     {
       "label": "Simulation Run",
       "type": "shell",
-      "command": "vvp my_design",
+      "command": "vvp sim_pre",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -36,7 +36,7 @@
     {
       "label": "Synthesis",
       "type": "shell",
-      "command": "yosys -s synth.ys",
+      "command": "./synthesis.sh",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -66,6 +66,21 @@
         "kind": "build",
         "isDefault": false
       }
+    },
+    {
+      "label": "OpenRoad",
+      "type": "shell",
+      "command": "openroad -exit run_pr.tcl",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "focus": false,
+        "reveal": "always"
+      }
     }
+
   ]
 }

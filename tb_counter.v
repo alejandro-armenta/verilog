@@ -27,7 +27,7 @@ module tb_counter;
   end
 
   initial begin
-    $monitor("", rst, en, count);
+    $monitor("%0t reset: %1b enable: %1b count: %3d", $time, rst, en, count);
   end
 
   initial begin

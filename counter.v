@@ -22,3 +22,7 @@ module counter (
   end
 
 endmodule
+
+// en el 5 esta el posedge clk
+// en el primer negedge clk es al 10
+// posedge clk 0 1 0
