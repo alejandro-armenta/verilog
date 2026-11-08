@@ -2,7 +2,12 @@
 
 (* top =  1  *)
 (* src = "counter.v:4.1-24.10" *)
-module counter(clk, rst, en, count);
+module counter (
+    clk,
+    rst,
+    en,
+    count
+);
   (* src = "counter.v:6.16-6.19" *)
   input clk;
   wire clk;
@@ -39,186 +44,186 @@ module counter(clk, rst, en, count);
   wire _21_;
   wire _22_;
   sky130_fd_sc_hd__clkinv_1 _23_ (
-    .A(rst),
-    .Y(_08_)
+      .A(rst),
+      .Y(_08_)
   );
   sky130_fd_sc_hd__clkinv_1 _24_ (
-    .A(count[6]),
-    .Y(_09_)
+      .A(count[6]),
+      .Y(_09_)
   );
   sky130_fd_sc_hd__a21oi_1 _25_ (
-    .A1(_09_),
-    .A2(_13_),
-    .B1(_16_),
-    .Y(_06_)
+      .A1(_09_),
+      .A2(_13_),
+      .B1(_16_),
+      .Y (_06_)
   );
   sky130_fd_sc_hd__a21oi_1 _26_ (
-    .A1(count[3]),
-    .A2(_11_),
-    .B1(count[4]),
-    .Y(_17_)
+      .A1(count[3]),
+      .A2(_11_),
+      .B1(count[4]),
+      .Y (_17_)
   );
   sky130_fd_sc_hd__nor3_1 _27_ (
-    .A(_08_),
-    .B(_12_),
-    .C(_17_),
-    .Y(_05_)
+      .A(_08_),
+      .B(_12_),
+      .C(_17_),
+      .Y(_05_)
   );
   sky130_fd_sc_hd__o21ai_0 _28_ (
-    .A1(count[0]),
-    .A2(en),
-    .B1(rst),
-    .Y(_18_)
+      .A1(count[0]),
+      .A2(en),
+      .B1(rst),
+      .Y (_18_)
   );
   sky130_fd_sc_hd__a21oi_1 _29_ (
-    .A1(count[0]),
-    .A2(en),
-    .B1(_18_),
-    .Y(_04_)
+      .A1(count[0]),
+      .A2(en),
+      .B1(_18_),
+      .Y (_04_)
   );
   sky130_fd_sc_hd__o21ai_0 _30_ (
-    .A1(count[5]),
-    .A2(_12_),
-    .B1(rst),
-    .Y(_19_)
+      .A1(count[5]),
+      .A2(_12_),
+      .B1(rst),
+      .Y (_19_)
   );
   sky130_fd_sc_hd__a21oi_1 _31_ (
-    .A1(count[5]),
-    .A2(_12_),
-    .B1(_19_),
-    .Y(_03_)
+      .A1(count[5]),
+      .A2(_12_),
+      .B1(_19_),
+      .Y (_03_)
   );
   sky130_fd_sc_hd__a21oi_1 _32_ (
-    .A1(count[0]),
-    .A2(en),
-    .B1(count[1]),
-    .Y(_20_)
+      .A1(count[0]),
+      .A2(en),
+      .B1(count[1]),
+      .Y (_20_)
   );
   sky130_fd_sc_hd__nor3_1 _33_ (
-    .A(_08_),
-    .B(_10_),
-    .C(_20_),
-    .Y(_02_)
+      .A(_08_),
+      .B(_10_),
+      .C(_20_),
+      .Y(_02_)
   );
   sky130_fd_sc_hd__o21ai_0 _34_ (
-    .A1(count[3]),
-    .A2(_11_),
-    .B1(rst),
-    .Y(_21_)
+      .A1(count[3]),
+      .A2(_11_),
+      .B1(rst),
+      .Y (_21_)
   );
   sky130_fd_sc_hd__and3_1 _35_ (
-    .A(count[0]),
-    .B(count[1]),
-    .C(en),
-    .X(_10_)
+      .A(count[0]),
+      .B(count[1]),
+      .C(en),
+      .X(_10_)
   );
   sky130_fd_sc_hd__a21oi_1 _36_ (
-    .A1(count[3]),
-    .A2(_11_),
-    .B1(_21_),
-    .Y(_01_)
+      .A1(count[3]),
+      .A2(_11_),
+      .B1(_21_),
+      .Y (_01_)
   );
   sky130_fd_sc_hd__o21ai_0 _37_ (
-    .A1(count[2]),
-    .A2(_10_),
-    .B1(rst),
-    .Y(_22_)
+      .A1(count[2]),
+      .A2(_10_),
+      .B1(rst),
+      .Y (_22_)
   );
   sky130_fd_sc_hd__nor2_1 _38_ (
-    .A(_11_),
-    .B(_22_),
-    .Y(_00_)
+      .A(_11_),
+      .B(_22_),
+      .Y(_00_)
   );
   sky130_fd_sc_hd__and4_1 _39_ (
-    .A(count[2]),
-    .B(count[0]),
-    .C(count[1]),
-    .D(en),
-    .X(_11_)
+      .A(count[2]),
+      .B(count[0]),
+      .C(count[1]),
+      .D(en),
+      .X(_11_)
   );
   sky130_fd_sc_hd__and3_1 _40_ (
-    .A(count[4]),
-    .B(count[3]),
-    .C(_11_),
-    .X(_12_)
+      .A(count[4]),
+      .B(count[3]),
+      .C(_11_),
+      .X(_12_)
   );
   sky130_fd_sc_hd__nand4_1 _41_ (
-    .A(count[5]),
-    .B(count[4]),
-    .C(count[3]),
-    .D(_11_),
-    .Y(_13_)
+      .A(count[5]),
+      .B(count[4]),
+      .C(count[3]),
+      .D(_11_),
+      .Y(_13_)
   );
   sky130_fd_sc_hd__o21ai_0 _42_ (
-    .A1(_09_),
-    .A2(_13_),
-    .B1(count[7]),
-    .Y(_14_)
+      .A1(_09_),
+      .A2(_13_),
+      .B1(count[7]),
+      .Y (_14_)
   );
   sky130_fd_sc_hd__or3_1 _43_ (
-    .A(_09_),
-    .B(count[7]),
-    .C(_13_),
-    .X(_15_)
+      .A(_09_),
+      .B(count[7]),
+      .C(_13_),
+      .X(_15_)
   );
   sky130_fd_sc_hd__a21oi_1 _44_ (
-    .A1(_14_),
-    .A2(_15_),
-    .B1(_08_),
-    .Y(_07_)
+      .A1(_14_),
+      .A2(_15_),
+      .B1(_08_),
+      .Y (_07_)
   );
   sky130_fd_sc_hd__o21ai_0 _45_ (
-    .A1(_09_),
-    .A2(_13_),
-    .B1(rst),
-    .Y(_16_)
+      .A1(_09_),
+      .A2(_13_),
+      .B1(rst),
+      .Y (_16_)
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _46_ (
-    .CLK(clk),
-    .D(_04_),
-    .Q(count[0])
+      .CLK(clk),
+      .D  (_04_),
+      .Q  (count[0])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _47_ (
-    .CLK(clk),
-    .D(_02_),
-    .Q(count[1])
+      .CLK(clk),
+      .D  (_02_),
+      .Q  (count[1])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _48_ (
-    .CLK(clk),
-    .D(_00_),
-    .Q(count[2])
+      .CLK(clk),
+      .D  (_00_),
+      .Q  (count[2])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _49_ (
-    .CLK(clk),
-    .D(_01_),
-    .Q(count[3])
+      .CLK(clk),
+      .D  (_01_),
+      .Q  (count[3])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _50_ (
-    .CLK(clk),
-    .D(_05_),
-    .Q(count[4])
+      .CLK(clk),
+      .D  (_05_),
+      .Q  (count[4])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _51_ (
-    .CLK(clk),
-    .D(_03_),
-    .Q(count[5])
+      .CLK(clk),
+      .D  (_03_),
+      .Q  (count[5])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _52_ (
-    .CLK(clk),
-    .D(_06_),
-    .Q(count[6])
+      .CLK(clk),
+      .D  (_06_),
+      .Q  (count[6])
   );
   (* src = "counter.v:14.3-22.6" *)
   sky130_fd_sc_hd__dfxtp_1 _53_ (
-    .CLK(clk),
-    .D(_07_),
-    .Q(count[7])
+      .CLK(clk),
+      .D  (_07_),
+      .Q  (count[7])
   );
 endmodule
