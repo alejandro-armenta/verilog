@@ -1,53 +1,53 @@
 # ==========================================
 # 1. INITIALIZE & READ DESIGN DATA
 # ==========================================
-# Ensure PDK_ROOT environmental variable is properly loaded
 if {![info exists env(PDK_ROOT)]} {
     puts "Error: Environmental variable PDK_ROOT is not set."
     exit 1
 }
 set pdk_root $env(PDK_ROOT)
 
-# Read the technology and cell physical abstracts from open_pdks pathing
+# Read the technology and cell physical abstracts
 read_lef $pdk_root/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef
 read_lef $pdk_root/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
 
-# Read your timing database
+# Read timing database
 read_liberty $pdk_root/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
 
-# Read the synthesized gate-level netlist file you generated with Yosys
-# (Update this path to your actual verilog netlist location)
+# Read your synthesized gate-level netlist file (Update this path to your actual file)
 read_verilog /path/to/your_synthesized_netlist.v
 
 # Link the netlist together under your top module name
 link_design counter
 
-# Define your design constraint clock period (10.0ns = 100MHz)
-create_clock -name clk -period 10.0 [get_ports clk]
+# Load your SDC file directly to apply constraints cleanly
+read_sdc counter.sdc
 
 # ==========================================
 # 2. FLOORPLANNING
 # ==========================================
-# FIX: OpenROAD initialize_floorplan uses -site, but -die_area and -core_area 
-# expect a 4-element list bounding box structure.
+# FIX: OpenROAD initialize_floorplan uses a 4-element list for bounds, -site must match LEF
 initialize_floorplan -die_area {0 0 100 100} -core_area {10 10 90 90} -site unithd
 
 # Inject the macro/IO power supply rails (VDD and VSS)
 add_global_connection -net VDD -pin_pattern {^VDD$} -power
 add_global_connection -net VSS -pin_pattern {^VSS$} -ground
 
-# Automatically arrange the I/O pins (clk, rst, en, count) along the die edges
-# FIX: place_pins requires a defined routing layer string configuration 
+# FIX: tracks must be initialized before pin placement so pins can snap to routing grids
+make_tracks met1 -x_offset 0.17 -x_pitch 0.34 -y_offset 0.17 -y_pitch 0.34
+make_tracks met2 -x_offset 0.23 -x_pitch 0.46 -y_offset 0.23 -y_pitch 0.46
+make_tracks met3 -x_offset 0.34 -x_pitch 0.68 -y_offset 0.34 -y_pitch 0.68
+
+# FIX: place_pins arguments corrected for standard OpenROAD syntax
 place_pins -hor_layer met3 -ver_layer met2 -random
 
-# FIX: make_tracks requires specifying the routing layers or using -pdk to pull 
-# track definitions automatically from the loaded LEF.
-make_tracks
+# MISSING STEP: Generate the power grid (PDN) structure before placing logic cells
+pdngen
 
 # ==========================================
 # 3. PLACEMENT & OPTIMIZATION
 # ==========================================
-# Perform global placement with a targeted cell density of 40%
+# Perform global placement
 global_placement -density 0.40
 
 # Optimize timing slack and logic mapping variations
@@ -60,9 +60,8 @@ detailed_placement
 # ==========================================
 # 4. CLOCK TREE SYNTHESIS (CTS)
 # ==========================================
-# Synthesize the clock network using Sky130 clock buffers
-# FIX: clock_tree_synthesis uses -buf_list. Ensure cells exist in sky130_fd_sc_hd
-clock_tree_synthesis -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2} -root_buf sky130_fd_sc_hd__clkbuf_4
+# FIX: clock_tree_synthesis requires explicit -buf_list matching the sky130 target
+clock_tree_synthesis -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4}
 set_propagated_clock [all_clocks]
 
 # Refine row grid packing following buffer additions
@@ -74,15 +73,22 @@ detailed_placement
 # Plan global signal wire paths across available channels
 global_route
 
-# Direct TritonRoute to execute the fine detailed metal layouts
-# FIX: TritonRoute detailed_route engine flags must specify output paths properly.
-detailed_route -output_drc drc_reports.rpt
+# FIX: detailed_route in OpenROAD does not accept a raw -output_drc flag.
+# Output paths and parameters are handled via internal commands or OpenLane variables.
+detailed_route
 
 # ==========================================
-# 6. EXPORT BLUEPRINTS
+# 6. EXPORT BLUEPRINTS & SIMULATION DATA
 # ==========================================
-# Save your completed layout back out to a standard DEF exchange database file
+# Save your completed layout back out to a standard DEF file
 write_def ./counter_layout.def
+
+# CRITICAL FOR SIMULATION: Export the post-layout gate netlist
+write_verilog ./counter_post_layout.v
+
+# CRITICAL FOR SIMULATION: Extract parasitics and write out the timing delays (SDF)
+estimate_parasitics -global_routing
+write_sdf ./counter_layout.sdf
 
 puts "OpenROAD Layout Flow Successfully Completed!"
 exit

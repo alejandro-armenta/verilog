@@ -1,5 +1,46 @@
-invertidores de tiempo 
 
-todas estas son celulas 
+Phase 1: Reading Your Assets (The Setup)
 
-le files contain only macro abstracts 
+Before building, OpenROAD needs to know the physical rules of your factory (the foundry) and what components are available.
+• read_lef ...techlef/...: Loads the Technology LEF. This defines the overall physical rules of the chip—how many metal layers are available, how thick the wires can be, and how close together paths can be placed without short-circuiting.
+• read_lef ...lef/...: Loads the Cell LEF. This contains the physical dimensions and boundary boxes of every individual logic gate (AND, OR, Flip-Flops) available in the SkyWater 130nm library.
+• read_liberty ...: Loads the timing properties. This file tells OpenROAD how fast electricity flows through each gate under typical operating conditions (e.g., at 1.8 V and 25°C).
+• read_verilog ...: Reads your structural netlist. This is not your original human-written RTL; it is the gate-mapped file outputted by Yosys that says exactly which standard cells need to be connected to build your counter.
+• link_design counter: Glues all the LEF files, timing models, and netlists together under your top-level module name (counter).
+• read_sdc counter.sdc: Injects your timing targets (your 50 MHz clock constraint), telling the layout engine exactly how aggressive it needs to be when placing parts.
+
+Phase 2: Floorplanning (Structuring the Sandbox)
+
+This phase initializes the physical real estate of your piece of silicon.
+• initialize_floorplan -die_area {0 0 100 100} ...: Draws a square boundary that is exactly 100 × 100 microns large. It marks the inner 90 × 90 micron zone as the "core area" where logic gates are allowed to sit.
+• add_global_connection ...: Tells the system that every single standard cell placed down needs to have its internal hidden power pins virtually tied to global VDD (Power) and VSS (Ground) networks.
+• make_tracks ...: Draws invisible routing grids across the chip for Metal 1, Metal 2, and Metal 3. Think of these like virtual highway lanes—all signal wires placed later must snap onto these exact tracks to prevent short circuits.
+• place_pins ...: Automatically spaces your external signals (clk, rst, en, count) around the outer perimeter of the die so they can eventually connect to the outside world.
+• pdngen: Short for Power Distribution Network Generation. This physically places heavy, wide copper/aluminum straps across your chip to deliver power evenly to all logic rows, preventing voltage drops.
+
+Phase 3: Placement (Arranging the Furniture)
+
+Now that the sandbox is ready, the tool drops your logic gates onto the board.
+• global_placement -density 0.40: Roughly scatters your counter's internal logic gates across the floorplan. It aims to use only 40% of the available row space, keeping cells spread out so there is plenty of breathing room for signal wires to pass through.
+• buffer_ports: Analyzes the input and output pins. If an input signal like en has to travel far or drive too much load, this command automatically injects buffer gates to amplify the signal strength.
+• detailed_placement: Legalizes the layout. Global placement can leave cells overlapping or slightly off-grid. Detailed placement snaps every logic cell perfectly into a designated row slot, aligning it seamlessly with the power rails.
+
+Phase 4: Clock Tree Synthesis (The Heartbeat)
+
+The clock signal is the most critical path in a synchronous design like a counter. It must reach every flip-flop at the exact same picosecond.
+• clock_tree_synthesis ...: Builds a balanced tree structure using specific, highly optimized clock buffers. Instead of running one long wire that degrades over distance, it creates branches to distribute the clk signal cleanly and evenly.
+• set_propagated_clock [all_clocks]: Tells the timing analyzer to stop guessing the clock delay and switch to measuring the actual calculated physical latency of the newly generated clock buffer branches.
+
+Phase 5: Routing (Wiring It Together)
+
+With all the components locked onto the grid, OpenROAD hooks up the signals.
+• global_route: Creates a rough, high-level map of where wires should go, dividing the chip into a coarse grid to avoid major wire congestion.
+• detailed_route: The actual physical wiring engine (TritonRoute). It carefully draws every single trace line, layer change, and via connection for your signals, strictly adhering to the foundry's physical design rules to ensure zero manufacturing defects.
+
+Phase 6: Exporting Blueprints
+
+The chip is complete; this phase exports the final files for verification and manufacturing.
+• write_def ...: Saves the complete geometric coordinate map of every single component and wire layer. This file can be converted to GDSII format for manufacturing at a foundry.
+• write_verilog ...: Exports your Post-Layout Netlist. It looks like your initial netlist, but it now includes all the newly added clock tree buffers and input/output port buffers. This is what you run in your layout simulation.
+• write_sdf ...: Standard Delay Format. It calculates the physical resistance and capacitance of every wire trace drawn during routing and exports the exact delay numbers. This is what you back-annotate into your simulator to run timing checks.
+Now that the whole automated flow is clear, would you like to know how to execute this Tcl script from your Linux terminal, or do you want to look at how to load the generated files into Icarus Verilog for simulation?

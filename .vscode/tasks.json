@@ -70,7 +70,7 @@
     {
       "label": "OpenRoad",
       "type": "shell",
-      "command": "openroad -exit run_pr.tcl",
+      "command": "__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia openroad -gui run_pr.tcl",
       "problemMatcher": [],
       "group": {
         "kind": "build",

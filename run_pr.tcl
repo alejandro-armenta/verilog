@@ -13,16 +13,25 @@ read_liberty /usr/local/share/pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib
 read_verilog ./counter_synthesized.v
 
 link_design counter
- 
 
-# read_lef $pdk_root/sky130A/libs.ref
+read_sdc counter.sdc
 
-# read_lef ./sky130_fd_sc_hd.tlef
+# this creates the area to create the chip
 
-# read_lef ./sky130_fd_sc_hd.lef
+initialize_floorplan -die_area {0 0 100 100} -core_area {10 10 90 90} -site unithd
 
-# read_liberty ./sky130_fd_sc_hd__tt_025C_1v80.lib
+# all cells must be connected to the power and to the ground
 
-# read_verilog ./counter_synthesized.v
+add_global_connection -net VDD -pin_pattern {^VDD$} -power 
+add_global_connection -net VSS -pin_pattern {^VSS$} -ground
 
-# link_design counter
+# these are the tracks for connecting data
+make_tracks
+
+
+place_pins -hor_layer met3 -ver_layer met2 -annealing
+
+read_power_cfg
+
+# these are the tracks for power
+pdngen
