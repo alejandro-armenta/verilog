@@ -55,3 +55,4 @@ estimate_parasitics -placement
 buffer_ports
 
 detailed_placement
+
