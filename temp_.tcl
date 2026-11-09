@@ -1,16 +1,20 @@
-# ==========================================
-# 3. PLACEMENT & OPTIMIZATION
-# ==========================================
-# Perform global placement with a targeted cell density of 40%
-# Offloaded to your RTX 3060 via the DREAMPlace/DPL engine backend
-global_placement -density 0.40
+# ====================================================================
+# 4. CLOCK TREE SYNTHESIS (CTS) & TIMING ANALYSES
+# ====================================================================
+# Select standard clock buffers from your sky130_fd_sc_hd PDK cell library
+set_wire_rc -signal -layer met2
+set_wire_rc -clock  -layer met3
 
-# Optimize timing slack, drive strengths, and long-wire structures
-estimate_parasitics -placement
-buffer_ports
+# Synthesize the clock branches cleanly
+clock_tree_synthesis -root_buf sky130_fd_sc_hd__clkbuf_4 \
+                     -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2} \
+                     -clk_nets {clk}
 
-# Lock cells perfectly into their valid unithd row slot grids (Legalization)
+# Transition the analyzer to evaluate actual physical buffer tree delays
+set_propagated_clock [all_clocks]
+
+# Run a quick legalized placement adjustment to fix slots after adding clock buffers
 detailed_placement
 
-# Pause the script to visually inspect the placed gates
+# Pause the tool to let us check the updated timing or cell properties in the GUI
 gui::show

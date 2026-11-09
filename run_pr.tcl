@@ -56,3 +56,4 @@ buffer_ports
 
 detailed_placement
 
+clock_tree_synthesis -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4}
