@@ -29,6 +29,8 @@ add_global_connection -net VSS -pin_pattern {^VSS$} -ground
 
 make_tracks
 
+set_wire_rc -layer "met3"
+
 # data is connected to met3 and met2
 
 place_pins -hor_layer met3 -ver_layer met2 -annealing
@@ -47,3 +49,9 @@ add_pdn_connect -grid std_cell_grid -layers {met1 met4}
 
 pdngen
 
+global_placement -density 0.40
+
+estimate_parasitics -placement
+buffer_ports
+
+detailed_placement
