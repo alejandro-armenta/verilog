@@ -26,12 +26,24 @@ add_global_connection -net VDD -pin_pattern {^VDD$} -power
 add_global_connection -net VSS -pin_pattern {^VSS$} -ground
 
 # these are the tracks for connecting data
+
 make_tracks
 
+# data is connected to met3 and met2
 
 place_pins -hor_layer met3 -ver_layer met2 -annealing
 
-read_power_cfg
+set_voltage_domain -name CORE -power VDD -ground VSS
 
-# these are the tracks for power
+define_pdn_grid -name std_cell_grid -voltage_domain CORE
+
+# power is connected to met1 and met4
+
+add_pdn_stripe -grid std_cell_grid -layer met1 -width 0.48 -followpins 
+
+add_pdn_stripe -grid std_cell_grid -layer met4 -width 1.6 -pitch 27.0 -offset 13.5
+
+add_pdn_connect -grid std_cell_grid -layers {met1 met4}
+
 pdngen
+

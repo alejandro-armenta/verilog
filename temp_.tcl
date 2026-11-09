@@ -12,17 +12,17 @@ make_tracks
 place_pins -hor_layers met3 -ver_layers met2 -annealing
 
 # ----------------------------------------------------------
-# NATIVE OPENROAD PDN GENERATION CODE (Replaces read_power_cfg)
+# FIXED NATIVE OPENROAD PDN COMMANDS
 # ----------------------------------------------------------
 
 # 1. Initialize the global power domain
 set_voltage_domain -name CORE -power VDD -ground VSS
 
-# 2. Define the main power grid template for standard cells
-define_pdn_grid -name std_cell_grid -voltage_domain CORE
+# 2. Define the main power grid template
+define_pdn_grid -name std_cell_grid -voltage_domains CORE
 
-# 3. Add Fine Horizontal Rails (Metal 1) directly over standard cell rows
-add_pdn_stdcell -grid std_cell_grid -layer met1 -width 0.48
+# 3. FIX: Add Fine Horizontal Rails on met1 using the -followpins flag
+add_pdn_stripe -grid std_cell_grid -layer met1 -width 0.48 -followpins
 
 # 4. Add Thick Vertical Distribution Straps (Metal 4) across the chip
 add_pdn_stripe -grid std_cell_grid -layer met4 -width 1.6 -pitch 27.0 -offset 13.5
