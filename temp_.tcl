@@ -1,20 +1,46 @@
 # ====================================================================
-# 4. CLOCK TREE SYNTHESIS (CTS) & TIMING ANALYSES
+# 5. GLOBAL & DETAILED ROUTING
 # ====================================================================
-# Select standard clock buffers from your sky130_fd_sc_hd PDK cell library
-set_wire_rc -signal -layer met2
-set_wire_rc -clock  -layer met3
+puts "INFO: Starting Global Routing..."
+# Plans the coarse, global routing topologies across available channels
+global_route
 
-# Synthesize the clock branches cleanly
-clock_tree_synthesis -root_buf sky130_fd_sc_hd__clkbuf_4 \
-                     -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2} \
-                     -clk_nets {clk}
+puts "INFO: Starting Detailed Routing (TritonRoute)..."
+# Traces exact physical metal tracks and drops vias matching Sky130 manufacturing rules.
+# This stage uses multi-threading and can leverage your RTX 3060 compute capabilities.
+detailed_route
 
-# Transition the analyzer to evaluate actual physical buffer tree delays
-set_propagated_clock [all_clocks]
+# ====================================================================
+# 6. PARASITIC EXTRACTION & SIGN-OFF REPORTING
+# ====================================================================
+puts "INFO: Extracting RC Parasitics..."
+# Calculates physical wire resistances and capacitive loads based on final layouts
+estimate_parasitics -global_routing
 
-# Run a quick legalized placement adjustment to fix slots after adding clock buffers
-detailed_placement
+puts "INFO: Running Final Static Timing Analysis (STA) Sign-Off..."
+# Prints your final true post-layout timing setup/hold slack reports
+report_checks -path_delay min_max -fields {slew cap input line cell arrival costs}
 
-# Pause the tool to let us check the updated timing or cell properties in the GUI
+# ====================================================================
+# 7. EXPORT BLUEPRINTS FOR MANUFACTURING & LAYOUT SIMULATION
+# ====================================================================
+puts "INFO: Exporting final layout databases..."
+
+# 1. Save physical layout file (GDS exchange database)
+write_def ./outputs/counter_final.def
+
+# 2. CRITICAL FOR SIMULATION: Export the post-layout gate-level netlist
+# This netlist contains your counter logic + newly injected clock tree/IO buffers
+write_verilog ./outputs/counter_post_layout.v
+
+# 3. CRITICAL FOR SIMULATION: Export the timing delays file (Standard Delay Format)
+# This maps the physical wire delays into numbers your simulator can read
+write_sdf ./outputs/counter_layout.sdf
+
+puts "===================================================================="
+puts " OpenROAD Layout Flow Completed Successfully!"
+puts " Final assets saved to ./outputs/"
+puts "===================================================================="
+
+# Re-open the GUI so you can see the finished, beautifully routed chip!
 gui::show

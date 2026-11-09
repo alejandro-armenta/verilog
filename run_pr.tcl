@@ -52,8 +52,21 @@ pdngen
 global_placement -density 0.40
 
 estimate_parasitics -placement
+
 buffer_ports
 
 detailed_placement
 
-clock_tree_synthesis -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4}
+clock_tree_synthesis -root_buf sky130_fd_sc_hd__clkbuf_4 -buf_list {sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2} -clk_nets {clk}
+
+set_propagated_clock [all_clocks]
+
+detailed_placement
+
+global_route
+
+detailed_route
+
+estimate_parasitics -global_routing
+
+report_checks -path_delay min_max -fields {slew cap input}

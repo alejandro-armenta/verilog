@@ -8,7 +8,7 @@ create_clock -name sys_clk -period 20.0 [get_ports clk]
 # 2. Clock Uncertainties & Margins
 # ====================================================================
 # Models 5% clock jitter and layout skew (0.05 * 20.0ns = 1.0ns).
-set_clock_uncertainty 1.0 [get_clocks sys_clk]
+set_clock_uncertainty 0.2 [get_clocks sys_clk]
 
 # Models a realistic rise/fall edge transition time for the clock path.
 set_clock_transition 0.15 [get_clocks sys_clk]
