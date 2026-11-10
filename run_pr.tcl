@@ -75,4 +75,4 @@ write_def ./outputs/counter_final.def
 
 write_verilog ./outputs/counter_post_layout.v
 
-write_def ./outputs/counter_layout.sdf
+write_sdf ./outputs/counter_layout.sdf

@@ -2,7 +2,7 @@
 # 1. Define the Core Clock
 # ====================================================================
 # Creates a 50 MHz clock with a 20.0ns period targeting your 'clk' input port.
-create_clock -name sys_clk -period 20.0 [get_ports clk]
+create_clock -name sys_clk -period 6.0 [get_ports clk]
 
 # ====================================================================
 # 2. Clock Uncertainties & Margins
@@ -18,15 +18,15 @@ set_clock_transition 0.15 [get_clocks sys_clk]
 # ====================================================================
 # Tells OpenROAD that 'rst' and 'en' transitions arrive up to 4.0ns 
 # after the clock edge (leaving 16.0ns for internal chip routing).
-set_input_delay -clock sys_clk 4.0 [get_ports rst]
-set_input_delay -clock sys_clk 4.0 [get_ports en]
+set_input_delay -clock sys_clk 1.0 [get_ports rst]
+set_input_delay -clock sys_clk 1.0 [get_ports en]
 
 # ====================================================================
 # 4. Output Port Constraints (count)
 # ====================================================================
 # Reserves 4.0ns of setup time margin at the external pins for whatever 
 # device is reading your 8-bit 'count' bus.
-set_output_delay -clock sys_clk 4.0 [get_ports count[*]]
+set_output_delay -clock sys_clk 1.0 [get_ports count[*]]
 
 # ====================================================================
 # 5. Environment & Electrical Loads

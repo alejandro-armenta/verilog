@@ -21,9 +21,13 @@ module tb_counter;
     clk = 0;
 
     forever begin
-      #5 clk = ~clk;
+      #3 clk = ~clk;
     end
 
+  end
+
+  initial begin
+    $sdf_annotate("./outputs/counter_layout.sdf", dut);
   end
 
   initial begin
@@ -31,6 +35,10 @@ module tb_counter;
   end
 
   initial begin
+
+    // aqui dice a que archivo vas a meter las ondas y abajo dice que variables vas a meter 
+    $dumpfile("post_layout_sim.vcd");
+    $dumpvars(0, tb_counter);
 
     @(negedge clk);
     rst = 0;

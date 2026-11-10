@@ -8,7 +8,7 @@
     {
       "label": "Simulation Build",
       "type": "shell",
-      "command": "iverilog -o sim_pre counter.v tb_counter.v",
+      "command": "./compile.sh",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -22,7 +22,7 @@
     {
       "label": "Simulation Run",
       "type": "shell",
-      "command": "vvp sim_pre",
+      "command": "./obj_dir/Vtb_counter",
       "problemMatcher": [],
       "group": {
         "kind": "build",
