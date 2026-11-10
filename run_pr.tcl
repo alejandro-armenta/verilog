@@ -70,3 +70,9 @@ detailed_route
 estimate_parasitics -global_routing
 
 report_checks -path_delay min_max -fields {slew cap input}
+
+write_def ./outputs/counter_final.def
+
+write_verilog ./outputs/counter_post_layout.v
+
+write_def ./outputs/counter_layout.sdf
