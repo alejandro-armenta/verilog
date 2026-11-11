@@ -1,1 +1,1 @@
-iverilog -o pre_sim arbiter.v tb_arbiter.v
+iverilog -o pre_sim arbiter.v tb_arbiter.v d_flip_flop.v
