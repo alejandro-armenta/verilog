@@ -8,11 +8,11 @@
     {
       "label": "Simulation Build",
       "type": "shell",
-      "command": "./compile.sh",
+      "command": "./elaborate_sim.sh",
       "problemMatcher": [],
       "group": {
         "kind": "build",
-        "isDefault": false
+        "isDefault": true
       },
       "presentation": {
         "focus": false,
@@ -22,7 +22,7 @@
     {
       "label": "Simulation Run",
       "type": "shell",
-      "command": "./obj_dir/Vtb_counter",
+      "command": "./run_sim.sh",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -60,7 +60,7 @@
     {
       "label": "Open Wave",
       "type": "shell",
-      "command": "gtkwave and_gate_waves.vcd --script add_all.tcl",
+      "command": "gtkwave simulation.vcd",
       "problemMatcher": [],
       "group": {
         "kind": "build",
@@ -74,7 +74,7 @@
       "problemMatcher": [],
       "group": {
         "kind": "build",
-        "isDefault": true
+        "isDefault": false
       }
     }
 

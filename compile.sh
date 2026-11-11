@@ -1,1 +1,0 @@
-iverilog -g2012 -o counter_gls.vvp /usr/local/share/pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v /usr/local/share/pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v counter_post_layout.v counter_tb.v

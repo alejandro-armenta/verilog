@@ -1,1 +1,0 @@
-verilator --cc --exe --build -j 4 --trace -top-module counter /home/alejandro-armenta/oss-cad-suite/share/yosys/simcells.v counter_synthesized.v tb_counter.cpp

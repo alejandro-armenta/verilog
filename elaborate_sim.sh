@@ -1,0 +1,1 @@
+iverilog -o pre_sim counter.v tb_counter.v 

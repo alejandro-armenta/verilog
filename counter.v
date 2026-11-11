@@ -1,23 +1,19 @@
 
-`default_nettype none
-
 module counter (
-
-    input wire clk,
-    input wire rst,
-    input wire en,
-
-    output reg [7:0] count
-
+    clk,
+    rst,
+    en,
+    count
 );
 
-  always @(posedge clk) begin
+  input clk;
+  input rst;
+  input en;
+  output [7:0] count;
 
-    if (!rst) begin
-      count <= 8'b0;
-    end else if (en) begin
-      count <= count + 1;
-    end
+  wire a;
+
+  always @(posedge clk) begin
 
   end
 
