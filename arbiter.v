@@ -47,11 +47,12 @@ module arbiter (
   // este te dice a quien se le dio el grant
   reg [3:0] grant, grant_next;
 
-
   reg [3:0] serv_hist, serv_hist_next;
 
+  wire grant0, grant1, grant2, grant3;
+
   // aqui hay una distribucion de los bits
-  assign {grant0, grant1, grant2, grant3} = grant;
+  assign {grant3, grant2, grant1, grant0} = grant;
 
   // sequencial
 
@@ -89,6 +90,7 @@ module arbiter (
 
     case (arb_state)
 
+      // sistema round robin
       // solo en el idle utiliza la historia
       IDLE: begin
 
@@ -209,15 +211,51 @@ module arbiter (
       end
 
       GRANT0: begin
+        // es combinacional 
+
+        if (end_transaction0) begin
+
+          arb_state_next = IDLE;
+          grant_next     = 'd0;  // no hay nadie
+          serv_hist_next = 4'b0001;
+
+        end
+
+
       end
 
       GRANT1: begin
+
+        if (end_transaction1) begin
+
+          arb_state_next = IDLE;
+          grant_next     = 'd0;  // no hay nadie
+          serv_hist_next = 4'b0010;
+
+        end
+
       end
 
       GRANT2: begin
+        if (end_transaction2) begin
+
+          arb_state_next = IDLE;
+          grant_next     = 'd0;  // no hay nadie
+          serv_hist_next = 4'b0100;
+
+        end
+
       end
 
       GRANT3: begin
+        if (end_transaction3) begin
+
+          arb_state_next = IDLE;
+          grant_next     = 'd0;  // no hay nadie
+          serv_hist_next = 4'b1000;
+
+        end
+
       end
 
       default: begin

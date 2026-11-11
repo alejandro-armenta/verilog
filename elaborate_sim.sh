@@ -1,1 +1,1 @@
-iverilog -o pre_sim counter.v tb_counter.v 
+iverilog -o pre_sim arbiter.v tb_arbiter.v
