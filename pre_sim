@@ -7,16 +7,16 @@
 :vpi_module "/home/alejandro-armenta/oss-cad-suite/lib/ivl/vhdl_textio.vpi";
 :vpi_module "/home/alejandro-armenta/oss-cad-suite/lib/ivl/v2005_math.vpi";
 :vpi_module "/home/alejandro-armenta/oss-cad-suite/lib/ivl/va_math.vpi";
-S_0x5555844effc0 .scope module, "tb_counter" "tb_counter" 2 3;
+S_0x55557b781d30 .scope module, "tb_counter" "tb_counter" 2 3;
  .timescale -9 -12;
-S_0x5555844f0150 .scope module, "dut" "counter" 2 5, 3 2 0, S_0x5555844effc0;
+S_0x55557b781ec0 .scope module, "dut" "counter" 2 6, 3 2 0, S_0x55557b781d30;
  .timescale 0 0;
-o0x71d5f77cf018 .functor BUFZ 4, c4<zzzz>; HiZ drive
-v0x5555844f0330_0 .net "a", 3 0, o0x71d5f77cf018;  0 drivers
-o0x71d5f77cf048 .functor BUFZ 4, c4<zzzz>; HiZ drive
-v0x55558450b6b0_0 .net "b", 3 0, o0x71d5f77cf048;  0 drivers
-v0x55558450b790_0 .net "c", 3 0, L_0x55558450b850;  1 drivers
-L_0x55558450b850 .arith/div 4, o0x71d5f77cf018, o0x71d5f77cf048;
+o0x745b30f8e018 .functor BUFZ 4, c4<zzzz>; HiZ drive
+v0x55557b7820a0_0 .net "a", 3 0, o0x745b30f8e018;  0 drivers
+o0x745b30f8e048 .functor BUFZ 4, c4<zzzz>; HiZ drive
+v0x55557b7a8400_0 .net "b", 3 0, o0x745b30f8e048;  0 drivers
+v0x55557b7a84e0_0 .net "c", 3 0, L_0x55557b7a85a0;  1 drivers
+L_0x55557b7a85a0 .arith/div 4, o0x745b30f8e018, o0x745b30f8e048;
 # The file index is used to find the file name in the following table.
 :file_names 4;
     "N/A";

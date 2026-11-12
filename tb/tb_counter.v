@@ -2,8 +2,8 @@
 
 module tb_counter;
 
-  counter dut ();
 
+  counter dut ();
 
 
 endmodule
