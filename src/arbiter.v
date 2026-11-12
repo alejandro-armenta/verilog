@@ -94,6 +94,8 @@ module arbiter (
       // solo en el idle utiliza la historia
       IDLE: begin
 
+        // reverse case statement
+
         case (1'b1)
 
           serv_hist[3]: begin

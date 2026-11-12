@@ -18,9 +18,8 @@ module tb_arbiter;
   wire grant2;
   wire grant3;
 
-  d_flip_flop d_flip_flop0 ();
 
-  arbiter a (
+  arbiter arbiter0 (
 
       .clk (clk),
       .rstb(rstb),
@@ -42,9 +41,12 @@ module tb_arbiter;
 
   );
 
-  // initial begin
-  //   $monitor();
-  // end
+  reg rstb_flop;
+
+  d_flip_flop d_flip_flop0 (
+      .clk (clk),
+      .rstb(rstb)
+  );
 
   initial begin
     clk = 0;
