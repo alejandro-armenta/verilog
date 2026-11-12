@@ -4,4 +4,6 @@ module tb_counter;
 
   counter dut ();
 
+
+
 endmodule
