@@ -1,125 +1,112 @@
 `timescale 1ns / 1ps
 
-module tb_arbiter;
+module tb_device_regs;
 
-  // Inputs to the UUT (Unit Under Test)
-  reg  clk;
-  reg  rstb;
-  reg  request0;
-  reg  request1;
-  reg  request2;
-  reg  request3;
-  reg  end_transaction0;
-  reg  end_transaction1;
-  reg  end_transaction2;
-  reg  end_transaction3;
+  // Testbench signals
+  reg  [3:0] address;
+  reg        write_en;
+  reg  [7:0] data_in;
+  reg        read_en;
+  wire [7:0] read_data;
+  reg        clk;
+  reg        resetb;
 
-  // Outputs from the UUT
-  wire grant0;
-  wire grant1;
-  wire grant2;
-  wire grant3;
-
-  // Instantiate the Unit Under Test (UUT)
-  arbiter uut (
-      .clk(clk),
-      .rstb(rstb),
-      .request0(request0),
-      .request1(request1),
-      .request2(request2),
-      .request3(request3),
-      .end_transaction0(end_transaction0),
-      .end_transaction1(end_transaction1),
-      .end_transaction2(end_transaction2),
-      .end_transaction3(end_transaction3),
-      .grant0(grant0),
-      .grant1(grant1),
-      .grant2(grant2),
-      .grant3(grant3)
+  // Instantiate the Device Under Test (DUT)
+  device_regs uut (
+      .address  (address),
+      .write_en (write_en),
+      .data_in  (data_in),
+      .read_en  (read_en),
+      .read_data(read_data),
+      .clk      (clk),
+      .resetb   (resetb)
   );
 
-  // Clock generation (50MHz -> 20ns period)
-  always begin
-    #10 clk = ~clk;
-  end
+  // 100MHz Clock Generation (10ns period)
+  always #5 clk = ~clk;
 
-  // Test sequence
+  // Task to write to a register
+  task write_reg(input [3:0] addr, input [7:0] data);
+    begin
+      @(negedge clk);
+      address  = addr;
+      data_in  = data;
+      write_en = 1'b1;
+      read_en  = 1'b0;
+      @(posedge clk);  // Data latches on posedge
+      #1;
+      write_en = 1'b0;
+    end
+  endtask
+
+  // Task to read and verify a register
+  task read_and_check(input [3:0] addr, input [7:0] expected);
+    begin
+      @(negedge clk);
+      address  = addr;
+      write_en = 1'b0;
+      read_en  = 1'b1;
+      @(posedge clk);  // read_data updates on posedge
+      #1;
+      if (read_data === expected) begin
+        $display("[PASS] Addr %0d: Read 0x%0h (Expected 0x%0h)", addr, read_data, expected);
+      end else begin
+        $display("[FAIL] Addr %0d: Read 0x%0h (Expected 0x%0h)", addr, read_data, expected);
+      end
+      read_en = 1'b0;
+    end
+  endtask
+
+  // Main test sequence
   initial begin
-    // Initialize all inputs
-    clk = 0;
-    rstb = 0;
-    request0 = 0;
-    request1 = 0;
-    request2 = 0;
-    request3 = 0;
-    end_transaction0 = 0;
-    end_transaction1 = 0;
-    end_transaction2 = 0;
-    end_transaction3 = 0;
+    // Dump waveforms for GTKWave / ModelSim / Vivado
+    $dumpfile("tb_device_regs.vcd");
+    $dumpvars(0, tb_device_regs);
 
-    // --- Scenario 1: Reset Sequence ---
-    $display("[TB] Applying Reset...");
-    #25;
-    rstb = 1;  // Release reset out of clock edge
-    $display("[TB] Reset Released. FSM should be in IDLE with serv_hist pointing to bit 3.");
-    @(posedge clk);
-    #1;
+    // Initialize signals
+    clk      = 0;
+    resetb   = 1;
+    address  = 4'b0000;
+    write_en = 0;
+    read_en  = 0;
+    data_in  = 8'h00;
 
-    // --- Scenario 2: Single Request (Master 0) ---
-    // serv_hist[3] is active. If request0 happens, it should get granted.
-    $display("[TB] Requesting Master 0...");
-    request0 = 1;
+    $display("--- Starting Simulation ---");
 
-    @(posedge clk);  // Moves to GRANT state
-    #1;
-    request0 = 0;  // De-assert request once granted (simulating a standard protocol)
+    // 1. Apply Active-Low Reset
+    #12 resetb = 0;
+    #20 resetb = 1;
+    #10;
 
-    #40;  // Let it hold the grant for a couple of cycles
-    $display("[TB] Ending Master 0 transaction. History should update to bit 0.");
-    end_transaction0 = 1;
+    // 2. Verify registers cleared after reset
+    read_and_check(4'd0, 8'h00);
+    read_and_check(4'd1, 8'h00);
+    read_and_check(4'd2, 8'h00);
+    read_and_check(4'd3, 8'h00);
 
-    @(posedge clk);  // Moves back to IDLE
-    #1;
-    end_transaction0 = 0;
-    @(posedge clk);
-    #1;
+    // 3. Write unique values to all 4 registers
+    write_reg(4'd0, 8'hAA);
+    write_reg(4'd1, 8'h55);
+    write_reg(4'd2, 8'hF0);
+    write_reg(4'd3, 8'h0F);
 
-    // --- Scenario 3: Multiple Simultaneous Requests ---
-    // History now points to serv_hist[0] because Master 0 was served last.
-    // According to your IDLE case for serv_hist[0], priority order is: M1 -> M2 -> M3 -> M0
-    $display("[TB] Simulating simultaneous requests from Master 0 and Master 2...");
-    request0 = 1;
-    request2 = 1;
+    // 4. Read back and verify values
+    read_and_check(4'd0, 8'hAA);
+    read_and_check(4'd1, 8'h55);
+    read_and_check(4'd2, 8'hF0);
+    read_and_check(4'd3, 8'h0F);
 
-    @(posedge clk);  // FSM evaluates. Master 2 should win over Master 0 based on priority order.
-    #1;
-    request0 = 0;
-    request2 = 0;
+    // 5. Test out-of-bounds address (read_data should hold previous value 0x0F)
+    write_reg(4'd5, 8'h99);
+    read_and_check(4'd5, 8'h0F);
 
-    #40;
-    $display("[TB] Ending Master 2 transaction. History should update to bit 2.");
-    end_transaction2 = 1;
+    // 6. Test mid-operation reset
+    #10 resetb = 0;
+    #15 resetb = 1;
+    read_and_check(4'd0, 8'h00);
 
-    @(posedge clk);  // Moves back to IDLE
-    #1;
-    end_transaction2 = 0;
-    @(posedge clk);
-    #1;
-
-    // --- Scenario 4: No Requests ---
-    $display("[TB] No requests active. Checking if FSM remains stable in IDLE.");
-    #40;
-
-    // End simulation
-    $display("[TB] Simulation finished successfully.");
+    $display("--- Simulation Complete ---");
     $finish;
-  end
-
-  // Monitor changes in terminal window
-  initial begin
-    $monitor("Time=%0t | rstb=%b | Req={%b,%b,%b,%b} | Grant={%b,%b,%b,%b} | End={%b,%b,%b,%b}",
-             $time, rstb, request0, request1, request2, request3, grant0, grant1, grant2, grant3,
-             end_transaction0, end_transaction1, end_transaction2, end_transaction3);
   end
 
 endmodule
