@@ -1,1 +1,1 @@
-iverilog -o pre_sim -s tb_device_regs ./src/*.v ./tb/*.v
+iverilog -o pre_sim -s testbench_top ./src/*.v ./tb/*.v

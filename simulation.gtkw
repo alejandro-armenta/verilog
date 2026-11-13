@@ -1,0 +1,62 @@
+[*]
+[*] GTKWave Analyzer v3.3.126 (w)1999-2026 BSI
+[*] Thu Nov 12 22:09:11 2026
+[*]
+[dumpfile] "/home/alejandro-armenta/Documents/verilog/simulation.vcd"
+[dumpfile_mtime] "Thu Nov 12 21:49:35 2026"
+[dumpfile_size] 3204
+[savefile] "/home/alejandro-armenta/Documents/verilog/simulation.gtkw"
+[timestart] 0
+[size] 1920 946
+[pos] -1 -1
+*-15.121487 11200 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_device_regs.
+[treeopen] tb_device_regs.device_regs0.
+[treeopen] tb_device_regs.device_regs0.dev_reg_next.
+[sst_width] 278
+[signals_width] 348
+[sst_expanded] 1
+[sst_vpaned_height] 277
+@800200
+-device
+@22
+tb_device_regs.device_regs0.address[3:0]
+@28
+tb_device_regs.device_regs0.clk
+@22
+tb_device_regs.device_regs0.data_in[7:0]
+tb_device_regs.device_regs0.read_data[7:0]
+tb_device_regs.device_regs0.read_data_next[7:0]
+@28
+tb_device_regs.device_regs0.read_en
+@22
+tb_device_regs.device_regs0.reg0[7:0]
+tb_device_regs.device_regs0.reg1[7:0]
+tb_device_regs.device_regs0.reg2[7:0]
+tb_device_regs.device_regs0.reg3[7:0]
+@28
+tb_device_regs.device_regs0.resetb
+tb_device_regs.device_regs0.write_en
+@1000200
+-device
+@800201
+-function
+@c00023
+tb_device_regs.device_regs0.dev_reg_next.address[3:0]
+@28
+(0)tb_device_regs.device_regs0.dev_reg_next.address[3:0]
+(1)tb_device_regs.device_regs0.dev_reg_next.address[3:0]
+(2)tb_device_regs.device_regs0.dev_reg_next.address[3:0]
+(3)tb_device_regs.device_regs0.dev_reg_next.address[3:0]
+@1401201
+-group_end
+@23
+tb_device_regs.device_regs0.dev_reg_next.data_in[7:0]
+tb_device_regs.device_regs0.dev_reg_next.dev_reg[7:0]
+tb_device_regs.device_regs0.dev_reg_next.reg_offset[3:0]
+@29
+tb_device_regs.device_regs0.dev_reg_next.write_en
+@1000201
+-function
+[pattern_trace] 1
+[pattern_trace] 0

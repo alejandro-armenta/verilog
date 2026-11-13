@@ -12,7 +12,7 @@ module tb_device_regs;
 
   wire [7:0] read_data;
 
-  device_regs device_regs0 (
+  device_regs_withfunction device_regs0 (
       .address(address),
       .write_en(write_en),
       .data_in(data_in),
@@ -22,7 +22,6 @@ module tb_device_regs;
 
       .read_data(read_data)
   );
-
 
   initial begin
 
