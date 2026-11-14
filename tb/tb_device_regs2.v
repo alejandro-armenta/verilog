@@ -63,6 +63,96 @@ module testbench_top ();
 
   end
 
+  task reg_write;
 
+    input [3:0] address_in;
+    input [7:0] data_in;
+
+    begin
+
+      @(posedge clk_tb);
+      #1;
+
+      address_tb = address_in;
+
+      @(posedge clk_tb);
+      #1;
+
+      write_en_tb = 1'b1;
+      wrdata_tb   = data_in;
+
+      @(posedge clk_tb);
+      #1;
+
+      write_en_tb = 1'b0;
+      address_tb  = 4'hF;
+      wrdata_tb   = 8'h00;
+
+
+    end
+
+
+  endtask
+
+  task reg_read;
+
+    input [3:0] address_in;
+    input [7:0] expected_data;
+
+    begin
+
+      @(posedge clk_tb);
+      #1;
+
+      address_tb = address_in;
+
+      @(posedge clk_tb);
+      #1;
+
+      read_en_tb = 1'b1;
+
+      @(posedge clk_tb);
+      #1;
+
+      read_en_tb = 1'b0;
+      address_tb = 4'hF;
+
+      @(posedge clk_tb);
+
+      // check for x Z 0 1
+
+      if (rd_data_tb === expected_data) begin
+        $display("data matches: expected data: %h actual data: %h", expected_data, rd_data_tb);
+      end else begin
+        $display("ERROR: data mismatch: expected data: %h actual data: %h", expected_data,
+                 rd_data_tb);
+      end
+
+    end
+  endtask
+
+  initial begin
+
+    $dumpfile("simulation.vcd");
+    $dumpvars(0, testbench_top);
+
+    #1000;
+
+    reg_write(REG0_OFFSET, 8'hA5);
+    reg_read(REG0_OFFSET, 8'hA5);
+
+    reg_write(REG1_OFFSET, 8'hA6);
+    reg_read(REG1_OFFSET, 8'hA6);
+
+    reg_write(REG2_OFFSET, 8'hA7);
+    reg_read(REG2_OFFSET, 8'hA7);
+
+    reg_write(REG3_OFFSET, 8'hA8);
+    reg_read(REG3_OFFSET, 8'hA8);
+
+
+
+    $finish;
+  end
 
 endmodule
